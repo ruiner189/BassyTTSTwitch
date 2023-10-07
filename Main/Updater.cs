@@ -15,7 +15,7 @@ namespace BassyTTSTwitch
 {
     public class Updater
     {
-        public const string URL = "https://raw.githubusercontent.com/ruiner189/BassyTTSTwitch/master/version.json";
+        public const string URL = "https://raw.githubusercontent.com/ruiner189/BassyTTSTwitch/master/Main/version.json";
         public const string EXEFile = "updater.exe";
 
         public readonly static string UpdateDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Latest");

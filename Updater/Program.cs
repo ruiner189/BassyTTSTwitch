@@ -10,14 +10,25 @@ namespace Updater // Note: actual namespace depends on the project name.
     internal class Program
     {
         public const string EXEFile = "BassyTTSTwitch.exe";
-        public static string URL = "https://github.com/ruiner189/BassyTTSTwitch/releases/download/v1.0.1/BassyTTSTwitch.zip";
+        public static string URL = "";
         public readonly static string UpdateDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Latest");
 
         public static WebClient? DownloadClient;
         public static bool Running = true;
 
+        public static string[] BlacklistFiles = new string[]
+        {
+            "Updater.dll",
+            "Updater.exe",
+            "Updater.pdb",
+            "Updater.deps.json",
+            "Updater.runetimeconfig.json"
+        };
+
+
         static void Main(string[] args)
         {
+           
            if(args.Length == 0)
            {
                 Console.WriteLine("Missing URL!");
@@ -74,6 +85,7 @@ namespace Updater // Note: actual namespace depends on the project name.
                 Console.WriteLine(e.Message);
             }
 
+
             ClearFiles();
             Running = false;
         }
@@ -84,11 +96,32 @@ namespace Updater // Note: actual namespace depends on the project name.
 
             int rootLength = UpdateDirectory.Length;
 
+            
             foreach (string file in Directory.GetFiles(UpdateDirectory, "*", SearchOption.AllDirectories))
             {
-                string toFile = Path.Combine(Directory.GetCurrentDirectory(), file.Substring(rootLength + 1));
-                Console.WriteLine($"Copying {file} to {toFile}");
-                File.Copy(file, toFile, true);
+                try
+                {
+                    string fileName = file.Substring(rootLength + 1);
+                    bool skip = false;
+                    foreach(string notAllowed in BlacklistFiles)
+                    {
+                        if(fileName.ToLowerInvariant() == notAllowed.ToLowerInvariant())
+                        {
+                            skip = true;
+                            break;
+                        }
+                    }
+
+                    if (skip) continue;
+
+                    string toFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+                    Console.WriteLine($"Extracting {fileName} to {toFile}");
+                    File.Copy(file, toFile, true);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
 
@@ -115,10 +148,16 @@ namespace Updater // Note: actual namespace depends on the project name.
 
         private static void RunOtherProgram()
         {
+            Console.WriteLine("Extraction Complete");
+            Console.WriteLine($"Running {Path.Combine(Directory.GetCurrentDirectory(), EXEFile)}");
+            Thread.Sleep(1000);
+
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), EXEFile)))
             {
                 Process.Start(Path.Combine(Directory.GetCurrentDirectory(), EXEFile));
             }
+
+            Thread.Sleep(100);
         }
     }
 }

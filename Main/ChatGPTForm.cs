@@ -99,8 +99,8 @@ namespace BassyTTSTwitch
             Settings settings = Settings.Default;
 
 
-
-            settings.MessageWidgetSize = TTSManager.GetInstance().MessageWidget.Size;
+            if(TTSManager.GetInstance().MessageWidget != null && TTSManager.GetInstance().MessageWidget.IsHandleCreated)
+                settings.MessageWidgetSize = TTSManager.GetInstance().MessageWidget.Size;
 
             settings.InputDevice = InputDevice.SelectedItem.ToString();
             settings.CurrentBackgroundInformation = BackgroundText.Text;

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectionForm));
             this.TTSButton = new System.Windows.Forms.Button();
             this.ChatGPTButton = new System.Windows.Forms.Button();
             this.VersionLabel = new System.Windows.Forms.Label();
@@ -88,6 +89,7 @@
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.ChatGPTButton);
             this.Controls.Add(this.TTSButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SelectionForm";
             this.Text = "BassySelector";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
