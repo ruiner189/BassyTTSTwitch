@@ -56,7 +56,7 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name: BassyTTSTwitch.sln
+      Solution_Name: Main/BassyTTSTwitch.sln
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
@@ -79,7 +79,7 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
 
     - name: Restore NuGet packages
-      run: nuget restore BassyTTSTwitch.sln
+      run: nuget restore Main/BassyTTSTwitch.sln
 
     - name: Build Solution
-      run: msbuild BassyTTSTwitch.sln
+      run: msbuild Main/BassyTTSTwitch.sln
