@@ -30,7 +30,7 @@ namespace BassyTTSTwitch
 
         private void UpdateButton_Click(object sender, EventArgs e)
         {
-            Updater.UpdateToLatest();
+            Updater.DownloadLatest();
             DialogResult = DialogResult.OK;
         }
     }

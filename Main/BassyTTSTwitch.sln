@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.32602.291
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BassyTTSTwitch", "BassyTTSTwitch.csproj", "{601502BF-D62A-4CAA-990C-F14AD3166CDA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Updater", "..\Updater\Updater.csproj", "{19D733D5-3A78-454B-819C-CD0EB17D5269}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,11 +17,15 @@ Global
 		{601502BF-D62A-4CAA-990C-F14AD3166CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{601502BF-D62A-4CAA-990C-F14AD3166CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{601502BF-D62A-4CAA-990C-F14AD3166CDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19D733D5-3A78-454B-819C-CD0EB17D5269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19D733D5-3A78-454B-819C-CD0EB17D5269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19D733D5-3A78-454B-819C-CD0EB17D5269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19D733D5-3A78-454B-819C-CD0EB17D5269}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B19E5F62-E13E-4BC2-8AE2-8BE182B76E73}
+		SolutionGuid = {25AA5C70-686D-496A-AC0B-E533C49A01D1}
 	EndGlobalSection
 EndGlobal

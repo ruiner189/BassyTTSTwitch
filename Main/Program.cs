@@ -12,7 +12,7 @@ namespace BassyTTSTwitch
         public static ChatGPTForm ChatGPTForm;
         public static SelectionForm SelectionForm;
 
-        public const string VERSION = "1.0.1.1";
+        public const string VERSION = "1.0.1.2";
 
         /// <summary>
         /// The main entry point for the application.
