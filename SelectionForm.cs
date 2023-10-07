@@ -18,10 +18,18 @@ namespace BassyTTSTwitch
 
             VersionLabel.Text = $"Version: {Program.VERSION}";
 
+            if (Updater.CheckForUpdate())
+            {
+                UpdateForm form = new UpdateForm();
+                if(form.ShowDialog() == DialogResult.OK)
+                {
+                    Visible = false;
+                }
+            }
+
             if (!CredentialManager.HasAllCredentials())
             {
                 Console.WriteLine(CredentialManager.GetMissingCredentials());
-
             }
         }
 
