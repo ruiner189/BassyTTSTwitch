@@ -61,22 +61,19 @@ namespace BassyTTSTwitch
         {
             if (LatestURL == null) return;
 
-            using (var client = new WebClient())
+            using WebClient client = new WebClient();
+            try
             {
-                try
+                string json = client.DownloadString(URL);
+                JObject obj = JObject.Parse(json);
+                if (obj != null)
                 {
-                    string json = client.DownloadString(URL);
-                    JObject obj = JObject.Parse(json);
-                    if (obj != null)
-                    {
-                        LatestURL = (string)obj.GetValue("URL");
-                        LatestVersion = new Version((string)obj.GetValue("Version"));
-                    }
+                    LatestURL = (string)obj.GetValue("URL");
+                    LatestVersion = new Version((string)obj.GetValue("Version"));
                 }
-                catch (Exception)
-                {
-
-                }
+            }
+            catch (Exception)
+            {
 
             }
         }
@@ -92,7 +89,12 @@ namespace BassyTTSTwitch
         {
             if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), EXEFile)))
             {
-                Process.Start(Path.Combine(Directory.GetCurrentDirectory(), EXEFile), LatestURL);
+                Process process = new Process();
+                process.StartInfo.FileName = Path.Combine(Directory.GetCurrentDirectory(), EXEFile);
+                process.StartInfo.Arguments = LatestURL;
+                process.StartInfo.UseShellExecute = true;
+                process.StartInfo.Verb = "runas";
+                process.Start();
             }
         }
 

@@ -400,7 +400,7 @@ namespace BassyTTSTwitch
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "CommanderForm";
-            this.Text = "BassyTTS";
+            this.Text = "BassyTTSTwitch";
             ((System.ComponentModel.ISupportInitialize)(this.chatterSelectionAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.autoSelectAmount)).EndInit();
             this.toolStrip1.ResumeLayout(false);

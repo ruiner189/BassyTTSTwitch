@@ -10,35 +10,42 @@ namespace Updater // Note: actual namespace depends on the project name.
     internal class Program
     {
         public const string EXEFile = "BassyTTSTwitch.exe";
+        public const string CleanerEXEFile = "Updater.exe";
         public static string URL = "";
         public readonly static string UpdateDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Latest");
 
         public static WebClient? DownloadClient;
         public static bool Running = true;
 
-        public static string[] BlacklistFiles = new string[]
+        public static List<Tuple<string, string>> BackupFiles = new List<Tuple<string, string>>();
+
+        public static string[] ProgramFiles = new string[]
         {
             "Updater.dll",
             "Updater.exe",
             "Updater.pdb",
             "Updater.deps.json",
-            "Updater.runetimeconfig.json"
+            "Updater.runetimeconfig.json",
+            "latest.zip"
         };
 
 
         static void Main(string[] args)
         {
            
-           if(args.Length == 0)
-           {
-                Console.WriteLine("Missing URL!");
+            if(args.Length == 0)
+            {
+                Console.WriteLine("Missing Argument!");
                 return;
-           }
+            } else if (args[0] == "clean")
+            {
+                ClearOldFiles();
+                return;
+            } else
+            {
+                URL = args[0];
+            }
 
-            URL = args[0];
-           
-            Console.WriteLine(URL);
-            Console.WriteLine(Directory.GetCurrentDirectory());
             DownloadLatest();
 
             while (Running)
@@ -50,19 +57,34 @@ namespace Updater // Note: actual namespace depends on the project name.
         public static void DownloadLatest()
         {
             ClearFiles();
+            #pragma warning disable SYSLIB0014 
             DownloadClient = new WebClient();
+            #pragma warning restore SYSLIB0014 
             DownloadClient.DownloadFileCompleted += Completed;
-            Console.WriteLine("Downloading Zip");
+            Console.WriteLine($"Downloading Zip from {URL}");
             DownloadClient.DownloadFileAsync(new Uri(URL), "latest.zip");
-
+            DownloadClient.DownloadProgressChanged += DownloadProgressChanged;
         }
 
-        private static void Completed(object sender, AsyncCompletedEventArgs completeEvent)
+        public static void ClearOldFiles()
         {
-            DownloadClient.Dispose();
+            Thread.Sleep(1000);
+            DeleteOldFiles();
+            RunOtherProgram();
+            Running = false;
+        }
+
+        private static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            Console.Write($"\rDownloading... {e.ProgressPercentage}% ({e.BytesReceived} bytes / {e.TotalBytesToReceive} bytes)");
+        }
+
+        private static void Completed(object? sender, AsyncCompletedEventArgs? completeEvent)
+        {
+            DownloadClient?.Dispose();
             DownloadClient = null;
 
-            Console.WriteLine("Zip downloaded");
+            Console.WriteLine("\nDownload Complete");
 
             try
             {
@@ -72,9 +94,18 @@ namespace Updater // Note: actual namespace depends on the project name.
                         Directory.Delete(UpdateDirectory, true);
 
                     ZipFile.ExtractToDirectory("latest.zip", UpdateDirectory);
-                    ReplaceFiles();
+                    bool success = ReplaceFiles();
+
+                    if (!success)
+                    {
+                        RestoreBackup();
+                        Running = false;
+                        return;
+                    }
+
+                    DeleteBackup();
                     ClearFiles();
-                    RunOtherProgram();
+                    RunCleanProgram();
                     Running = false;
                     return;
                 }
@@ -83,6 +114,8 @@ namespace Updater // Note: actual namespace depends on the project name.
             {
                 Console.WriteLine("Failed to install new version");
                 Console.WriteLine(e.Message);
+                RestoreBackup();
+                return;
             }
 
 
@@ -90,39 +123,110 @@ namespace Updater // Note: actual namespace depends on the project name.
             Running = false;
         }
 
-        private static void ReplaceFiles()
+        private static void BackupFile(string filename)
         {
-            if (!Directory.Exists(UpdateDirectory)) return;
+            string destination = filename + ".bak";
+            BackupFiles.Add(new Tuple<string, string>(filename, destination));
+            File.Move(filename, destination, true);
+        }
 
-            int rootLength = UpdateDirectory.Length;
+        private static void RestoreBackup()
+        {
+            Console.WriteLine("Restoring Backup");
+            foreach(Tuple<string, string> fileName in BackupFiles) {
 
-            
-            foreach (string file in Directory.GetFiles(UpdateDirectory, "*", SearchOption.AllDirectories))
-            {
                 try
                 {
-                    string fileName = file.Substring(rootLength + 1);
-                    bool skip = false;
-                    foreach(string notAllowed in BlacklistFiles)
+                    if (File.Exists(fileName.Item2))
                     {
-                        if(fileName.ToLowerInvariant() == notAllowed.ToLowerInvariant())
-                        {
-                            skip = true;
-                            break;
-                        }
+                        File.Move(fileName.Item2, fileName.Item1);
                     }
-
-                    if (skip) continue;
-
-                    string toFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-                    Console.WriteLine($"Extracting {fileName} to {toFile}");
-                    File.Copy(file, toFile, true);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
             }
+            Console.WriteLine("Backup Restored");
+            Thread.Sleep(1000);
+        }
+
+        private static void DeleteBackup()
+        {
+            Console.WriteLine("Deleting Backup");
+            foreach (Tuple<string, string> fileName in BackupFiles)
+            {
+                try
+                {
+                    if (File.Exists(fileName.Item2))
+                    {
+                        string name = Path.GetFileName(fileName.Item2);
+                        bool skip = false;
+                        foreach (string programFile in ProgramFiles)
+                        {
+                            if (name.ToLowerInvariant() == programFile.ToLowerInvariant())
+                            {
+                                skip = true;
+                                break;
+                            }
+                        }
+
+                        if (skip) continue;
+                        File.Delete(fileName.Item2);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
+
+        private static void DeleteOldFiles()
+        {
+            Console.WriteLine("Deleting Old Files");
+            foreach(string fileName in ProgramFiles)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), fileName + ".bak");
+
+                if (File.Exists(path))
+                {
+                    Console.WriteLine($"Deleting {path}");
+                    File.Delete(path);
+                }
+            }
+        }
+
+        private static bool ReplaceFiles()
+        {
+            if (!Directory.Exists(UpdateDirectory)) return false;
+
+            try
+            {
+                foreach (string file in Directory.GetFiles(UpdateDirectory, "*", SearchOption.AllDirectories))
+                {
+
+                    string fileName = Path.GetFileName(file);
+
+                    string toFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+
+                    if (File.Exists(toFile))
+                    {
+                        BackupFile(toFile);
+                    }
+
+                    Console.WriteLine($"Extracting {fileName} to {toFile}");
+                    File.Copy(file, toFile, true);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+            return true;
         }
 
         private static void ClearFiles()
@@ -148,16 +252,25 @@ namespace Updater // Note: actual namespace depends on the project name.
 
         private static void RunOtherProgram()
         {
-            Console.WriteLine("Extraction Complete");
-            Console.WriteLine($"Running {Path.Combine(Directory.GetCurrentDirectory(), EXEFile)}");
-            Thread.Sleep(1000);
+            string path = Path.Combine(Directory.GetCurrentDirectory(), EXEFile);
 
-            if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), EXEFile)))
+            if (File.Exists(path))
             {
-                Process.Start(Path.Combine(Directory.GetCurrentDirectory(), EXEFile));
+                Console.WriteLine($"Running {path}");
+                Thread.Sleep(1000);
+                Process.Start(path);
             }
 
-            Thread.Sleep(100);
+        }
+
+        private static void RunCleanProgram()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), CleanerEXEFile);
+            if (File.Exists(path))
+            {
+                Console.WriteLine($"Cleaning up files");
+                Process.Start(path, "clean");
+            }
         }
     }
 }

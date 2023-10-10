@@ -164,6 +164,7 @@ namespace BassyTTSTwitch
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
+            CloudManager.GetInstance().SetVolume(Settings.Default.Volume);
             DialogResult = DialogResult.Cancel;
         }
 
@@ -203,6 +204,17 @@ namespace BassyTTSTwitch
         {
             string voice = voices[voiceChoice.SelectedIndex].Text;
             CloudManager.GetInstance().Speak("This is a test message", voice);
+        }
+
+        private void volumeBar_Scroll(object sender, EventArgs e)
+        {
+            volumePercentLabel.Text = $"{volumeBar.Value}%";
+            CloudManager.GetInstance().SetVolume(volumeBar.Value);
+        }
+
+        private void volumePercentLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

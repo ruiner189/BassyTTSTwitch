@@ -34,8 +34,6 @@ namespace BassyTTSTwitch
             _form.SaveSettings();
         }
 
-        
-
         public static void LoadSettingsToForm()
         {
             if (_form == null)
@@ -43,10 +41,5 @@ namespace BassyTTSTwitch
 
             _form.LoadSettings();
         }
-
-        
-
-
-
     }
 }

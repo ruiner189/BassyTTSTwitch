@@ -38,7 +38,7 @@ namespace BassyTTSTwitch
             foreach (var file in FileNames)
             {
                 if (!File.Exists(Util.GetCredentialPath(file))){
-                    s += $"\n{file}";
+                    s += $"\r\n{file}";
                 }
             }
             return s;

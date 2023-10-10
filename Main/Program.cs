@@ -12,7 +12,7 @@ namespace BassyTTSTwitch
         public static ChatGPTForm ChatGPTForm;
         public static SelectionForm SelectionForm;
 
-        public const string VERSION = "1.0.1.3";
+        public const string VERSION = "1.0.1.4";
 
         /// <summary>
         /// The main entry point for the application.
@@ -22,15 +22,16 @@ namespace BassyTTSTwitch
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            KeyboardManager.Initialize();
             CloudManager.Initialize();
-            TTSManager.Initialize();
-
             SelectionForm = new SelectionForm();
 
             Application.Run(SelectionForm);
+        }
 
+        internal static void InitializeManagers()
+        {
+            KeyboardManager.Initialize();
+            TTSManager.Initialize();
         }
     }
 }

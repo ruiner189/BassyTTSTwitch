@@ -101,24 +101,16 @@ namespace BassyTTSTwitch.Audio
             }
         }
 
-        private static WaveFileWriter waveFile;
         private static void LoadMic()
         {
             Microphone = new WaveInEvent();
             Microphone.WaveFormat = new WaveFormat(16000, 16, 1);
             Microphone.DeviceNumber = 0;
             Microphone.DataAvailable += GetMicData;
-            waveFile = new WaveFileWriter(Path.Combine(Directory.GetCurrentDirectory(), "audio.wav"), new WaveFormat(16000, 16, 1));
         }
 
         private static void GetMicData(object sender, WaveInEventArgs args)
         {
-            if (waveFile != null)
-            {
-                waveFile.Write(args.Buffer, 0, args.BytesRecorded);
-                waveFile.Flush();
-            }
-
             if (!_recordMic)
                 return;
 
@@ -221,7 +213,7 @@ namespace BassyTTSTwitch.Audio
 
             if (e != null)
             {
-                if (e.Key == System.Windows.Forms.Keys.V)
+                if (e.Key == System.Windows.Forms.Keys.N)
                 {
                     _lastMicHotKeyPress = Util.Now();
                     if (!_isRecording)

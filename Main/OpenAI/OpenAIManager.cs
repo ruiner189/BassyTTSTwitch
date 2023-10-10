@@ -128,11 +128,9 @@ namespace BassyTTSTwitch.OpenAI
             if(CredentialManager.TryGetData(CredentialManager.GetChatGPTPath(), out string token))
             {
                 Api = new OpenAIAPI(token);
-
-            }
-            else
+            } else
             {
-                Application.Exit();
+                Api = null;
             }
         }
 

@@ -29,8 +29,13 @@ namespace BassyTTSTwitch
 
             if (!CredentialManager.HasAllCredentials())
             {
-                Console.WriteLine(CredentialManager.GetMissingCredentials());
+                NoCredentialForm crash = new NoCredentialForm();
+                crash.SetText(CredentialManager.GetMissingCredentials());
+                crash.ShowDialog();
+                return;
             }
+
+            Program.InitializeManagers();
         }
 
         private void TTS_Click(object sender, EventArgs e)

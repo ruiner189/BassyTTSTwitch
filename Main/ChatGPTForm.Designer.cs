@@ -209,7 +209,8 @@ namespace BassyTTSTwitch
             this.Controls.Add(this.CurrentPrompt);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ChatGPTForm";
-            this.Text = "BassyChatGPT";
+            this.RightToLeftLayout = true;
+            this.Text = "BassyTTSTwitch";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);

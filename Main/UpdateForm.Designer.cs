@@ -107,13 +107,13 @@
             this.ClientSize = new System.Drawing.Size(174, 131);
             this.ControlBox = false;
             this.Controls.Add(this.splitContainer1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(190, 170);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(190, 170);
             this.Name = "UpdateForm";
-            this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Update Available";
             this.TopMost = true;

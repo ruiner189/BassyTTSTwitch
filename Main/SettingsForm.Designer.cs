@@ -309,6 +309,7 @@
             this.volumePercentLabel.Size = new System.Drawing.Size(33, 13);
             this.volumePercentLabel.TabIndex = 41;
             this.volumePercentLabel.Text = "100%";
+            this.volumePercentLabel.Click += new System.EventHandler(this.volumePercentLabel_Click);
             // 
             // volumeBar
             // 
@@ -323,6 +324,7 @@
             this.volumeBar.TickFrequency = 10;
             this.volumeBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.volumeBar.Value = 100;
+            this.volumeBar.Scroll += new System.EventHandler(this.volumeBar_Scroll);
             // 
             // VolumeLabel
             // 

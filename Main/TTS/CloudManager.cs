@@ -78,6 +78,10 @@ namespace BassyTTSTwitch.TTS
         private CloudManager()
         {
             _instance = this;
+
+            if (!CredentialManager.HasAllCredentials())
+                return;
+
             Player = new WaveOut();
             Player.PlaybackStopped += OnFinished;
 
@@ -188,13 +192,14 @@ namespace BassyTTSTwitch.TTS
             VoiceParams.Name = voice;
         }
 
-        private void SetVolume(int volumePercent)
+        public void SetVolume(int volumePercent)
         {
             Player.Volume = (volumePercent / 100f);
         }
 
         private void Login()
         {
+
             try
             {
                 TextToSpeechClientBuilder ttscb = new TextToSpeechClientBuilder();
@@ -207,7 +212,6 @@ namespace BassyTTSTwitch.TTS
             }
             catch (Exception e)
             {
-
                 Console.WriteLine($"Failed to login. {e.Message}");
             }
         }

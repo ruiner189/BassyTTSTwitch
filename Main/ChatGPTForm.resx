@@ -127,7 +127,7 @@ Each recording has a max length of 30 seconds.
 
 Press "Stop Record" to let the program finalize the text from your current mic data.
 
-Hold down "CTRL + V" to record automatically without hitting this button. Releasing the hotkey will stop the recording.</value>
+Hold down "CTRL + N" to record automatically without hitting this button. Releasing the hotkey will stop the recording.</value>
   </data>
   <metadata name="RecordTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>

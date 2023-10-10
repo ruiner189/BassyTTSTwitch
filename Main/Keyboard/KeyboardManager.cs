@@ -23,7 +23,7 @@ namespace BassyTTSTwitch.Keyboard
         }
         private KeyboardManager() {
             _hook = new KeyboardHook();
-            _hook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.V);
+            _hook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.N);
             _hook.RegisterHotKey(ModifierKeys.Control, System.Windows.Forms.Keys.B);
             _hook.KeyPressed += _hook_KeyPressed;
         }

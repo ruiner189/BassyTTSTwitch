@@ -18,7 +18,6 @@ namespace BassyTTSTwitch
 {
     public partial class ChatGPTForm : Form
     {
-        private ComboItem[] voices;
         private string CurrentText = "";
         private bool _recordReady = true;
         private bool _recording = false;
