@@ -82,8 +82,8 @@ namespace BassyTTSTwitch
             SetAutoSelectDuration(s.AutoSelectValue, s.AutoSelectUnit);
             AnnounceUser = s.AnnounceUser;
             AnnounceText = s.AnnouncementText;
-            ChatDelay = (long) s.ChatDelay;
-            HideMessageDelay = (long) s.MessageHideDelay;
+            ChatDelay = (long) s.ChatDelay * 1000;
+            HideMessageDelay = (long) s.MessageHideDelay * 1000;
         }
 
         private void SetAutoSelectDuration(long duration)

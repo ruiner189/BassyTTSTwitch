@@ -60,6 +60,10 @@ namespace BassyTTSTwitch.TTS
             "en-US-Neural2-I",
             "en-US-Neural2-J",
             "en-US-Polyglot-1",
+            "en-US-News-K",
+            "en-US-Casual-K",
+            "en-US-Journey-D",
+            "en-US-Journey-F"
         };
 
         public static void Initialize()

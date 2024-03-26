@@ -203,7 +203,7 @@ namespace BassyTTSTwitch
         private void VolumeTestButton_Click(object sender, EventArgs e)
         {
             string voice = voices[voiceChoice.SelectedIndex].Text;
-            CloudManager.GetInstance().Speak("This is a test message", voice);
+            CloudManager.GetInstance().Speak(AnnouncementTextBox.Text.Replace("{$user}","username"), voice);
         }
 
         private void volumeBar_Scroll(object sender, EventArgs e)
